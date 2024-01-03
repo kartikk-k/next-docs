@@ -1,26 +1,16 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { CreateDocument, GetAllDocuments } from "@/helpers/indexDB"
+import useDocumentsStore from "@/stores/DocumentsStore"
+import { useEffect } from "react"
 
 export default function Home() {
 
-  const [documents, setDocuments] = useState<docType[]>([])
+  // const documents = useDocumentsStore(state => state.documents)
 
   // useEffect(() => {
-  //   const data = GetAllDocuments()
-  //   if (data instanceof Error) {
-
-  //   } else setDocuments(data)
-  // }, [])
-
-  // useEffect(() => {
-
-  //   CreateDocument("useMemo")
-  //   CreateDocument("useContext")
-  //   CreateDocument("useState")
-  // }, [])
+  //   console.log(documents)
+  // }, [documents])
 
   return (
     <motion.div
@@ -29,9 +19,9 @@ export default function Home() {
     >
       <main className="h-32 bg-gray-200 text-black">
         <h1>This is home page</h1>
-        {documents.map(doc => (
+        {/* {documents.map(doc => (
           <p>{doc.title}</p>
-        ))}
+        ))} */}
       </main>
     </motion.div>
   )

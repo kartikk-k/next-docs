@@ -1,4 +1,12 @@
-let Store: IDBObjectStore | null = null;
+import useDbStore from "@/stores/DbStore";
+import useDocumentsStore from "@/stores/DocumentsStore";
+
+// for the database / indexedDB
+const setDatabase = useDbStore.getState().setDatabase
+const Database = useDbStore.getState().database
+
+// for the documents
+const setDocuments = useDocumentsStore.getState().setDocuments
 
 const InitializeDB = async () => {
     console.log("Initializing DB")
@@ -34,18 +42,16 @@ const InitializeDB = async () => {
     }
 
     // runs when the database is opened successfully
-    const promise = new Promise((resolve, reject) => {
-        openDB.onsuccess = function () {
-            const database = openDB.result
-            const transaction = database.transaction("Docs", "readwrite")
-            Store = transaction.objectStore("Docs")
-            resolve(true)
-        }
-    })
+    openDB.onsuccess = function () {
+        const database = openDB.result
+        const transaction = database.transaction("Docs", "readwrite")
+        // update the store
+        setDatabase(transaction.objectStore("Docs"))
+    }
 }
 
 const CreateDocument = (title: string) => {
-    if (!Store) return new Error("Store is not initialized")
+    if (!Database) return new Error("Store is not initialized")
 
     const newDoc: docType = {
         id: new Date().getTime().toString(),
@@ -55,30 +61,28 @@ const CreateDocument = (title: string) => {
         updatedAt: new Date(),
     }
 
-    Store.put(newDoc)
+    Database.put(newDoc)
 }
 
 const GetAllDocuments = () => {
-    if (!Store) return new Error("Store is not initialized")
+    // if (Database === null) return console.log("Store is not initialized")
+    console.log("Getting all documents")
 
-    const docs = Store.getAll()
-    let result: docType[] = []
+    const docs = Database!.getAll()
 
     docs.onerror = function () {
-        return new Error("Error getting the item")
+        return console.log("Error getting the item")
     }
 
     docs.onsuccess = function () {
-        result = docs.result
+        setDocuments(docs.result)
     }
-
-    return result
 }
 
 const GetDocument = (id: string) => {
-    if (!Store) return new Error("Store is not initialized")
+    if (!Database) return new Error("Store is not initialized")
 
-    const doc = Store.get(id)
+    const doc = Database.get(id)
     doc.onsuccess = function () {
         return doc.result
     }
@@ -88,15 +92,15 @@ const GetDocument = (id: string) => {
 }
 
 const UpdateDocument = (id: string, title: string, content: string) => {
-    if (!Store) return new Error("Store is not initialized")
+    if (!Database) return new Error("Store is not initialized")
 
-    const doc = Store.get(id)
+    const doc = Database.get(id)
     doc.onsuccess = function () {
         const docToUpdate = doc.result
         docToUpdate.title = title
         docToUpdate.content = content
         docToUpdate.updatedAt = new Date()
-        Store!.put(docToUpdate)
+        Database!.put(docToUpdate)
     }
     doc.onerror = function () {
         return new Error("Error getting the item")
@@ -104,8 +108,8 @@ const UpdateDocument = (id: string, title: string, content: string) => {
 }
 
 const DeleteDocument = (id: string) => {
-    if (!Store) return new Error("Store is not initialized")
-    Store.delete(id)
+    if (!Database) return new Error("Store is not initialized")
+    Database.delete(id)
 }
 
 

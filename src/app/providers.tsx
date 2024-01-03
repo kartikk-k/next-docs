@@ -1,17 +1,27 @@
 "use client"
 
-import InitializeDB from '@/helpers/indexDB'
 import React, { useEffect } from 'react'
+import useDbStore from '@/stores/DbStore'
+// import InitializeDB, { GetAllDocuments } from '@/helpers/indexDB'
+import InitializeDB from '@/helpers/indexDB/idbIndex'
+
 
 function Providers({ children }: { children: React.ReactNode }) {
 
+    const Database = useDbStore(state => state.database)
+
+    /* used to initialize the database if it hasn't been initialized yet. */
     useEffect(() => {
         if (!window) return
-        console.log("--")
-        const db = async () => {
-            await InitializeDB().then(() => console.log("DB Initialized"))
-        }
-    }, [window])
+        if (!Database?.name) InitializeDB()
+    }, [window, Database])
+
+    /* used to fetch all documents from the database when the `Database` variable changes. */
+    // useEffect(() => {
+    //     if (Database === null) return
+    //     console.log('fetching documents', Database)
+    //     GetAllDocuments()
+    // }, [Database])
 
     return (
         <div>
