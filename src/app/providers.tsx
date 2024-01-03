@@ -7,13 +7,13 @@ import InitializeDB from '@/helpers/indexDB'
 
 function Providers({ children }: { children: React.ReactNode }) {
 
-    const Database = useDbStore(state => state.database)
+    const isInitialized = useDbStore(state => state.isInitialized)
 
     /* used to initialize the database if it hasn't been initialized yet. */
     useEffect(() => {
         if (!window) return
-        if (!Database?.name) InitializeDB()
-    }, [window, Database])
+        if (!isInitialized) InitializeDB()
+    }, [window])
 
     return (
         <div>

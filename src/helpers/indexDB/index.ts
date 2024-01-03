@@ -3,24 +3,22 @@ import useDbStore from "@/stores/DbStore";
 
 
 const InitializeDB = async () => {
-    const setDatabase = useDbStore.getState().setDatabase
+    // const setDatabase = useDbStore.getState().setDatabase
+    const setIsInitialized = useDbStore.getState().setIsInitialized
 
     const db = await openDB('NEXT-Docs-DB', 1, {
         upgrade(database, oldVersion, newVersion, transaction, event) {
             const store = database.createObjectStore("Docs", { keyPath: "id" })
 
-            store.createIndex("title", "title", { unique: false })
-            store.createIndex("content", "content", { unique: false })
-            store.createIndex("createdAt", "createdAt", { unique: false })
-            store.createIndex("updatedAt", "updatedAt", { unique: false })
-            store.createIndex("shareUrl", "shareUrl", { unique: true })
+            store.createIndex("title", "title")
+            store.createIndex("content", "content")
+            store.createIndex("createdAt", "createdAt")
+            store.createIndex("updatedAt", "updatedAt")
+            store.createIndex("shareUrl", "shareUrl")
         },
     })
 
-    const store = db.transaction("Docs", "readwrite").objectStore("Docs")
-    setDatabase(store)
+    setIsInitialized(true)
 }
-
-
 
 export default InitializeDB;

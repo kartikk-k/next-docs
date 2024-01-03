@@ -1,31 +1,24 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import useDbStore from "@/stores/DbStore"
 import GetAllDocuments from "@/helpers/indexDB/GetAllDocuments"
 import useDocumentsStore from "@/stores/DocumentsStore"
+import CreateDocument from "@/helpers/indexDB/CreateDocument"
 
 export default function Home() {
 
-  const database = useDbStore(state => state.database)
+  const isInitialized = useDbStore(state => state.isInitialized)
   const documents = useDocumentsStore(state => state.documents)
 
-  // const [documents, setDocuments] = useState<docType[]>([])
-
   useEffect(() => {
-    // if (database?.name) getDocuments()
-    if (database?.name) GetAllDocuments()
-  }, [database])
+    if (isInitialized) GetAllDocuments()
+  }, [isInitialized])
 
-  // const getDocuments = async () => {
-  //   await GetAllDocuments().then((res) => {
-
-  //   }).catch((err) => {
-  //     console.error(err)
-  //   })
-
-  // }
+  const handleClick = () => {
+    CreateDocument("Untitled")
+  }
 
   return (
     <motion.div
@@ -35,8 +28,9 @@ export default function Home() {
       <main className="h-32 bg-gray-200 text-black">
         <h1>This is home page</h1>
         {documents.map(doc => (
-          <p>{doc.title}</p>
+          <p key={doc.id}>{doc.title}</p>
         ))}
+        <button onClick={handleClick}>add</button>
       </main>
     </motion.div>
   )
