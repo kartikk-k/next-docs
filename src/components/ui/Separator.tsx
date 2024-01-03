@@ -10,6 +10,7 @@ const Separator = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRe
         />
     )
 )
+Separator.displayName = 'Separator'
 
 
 export default Separator;
