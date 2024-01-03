@@ -1,16 +1,31 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useEffect, useState } from "react"
+import useDbStore from "@/stores/DbStore"
+import GetAllDocuments from "@/helpers/indexDB/GetAllDocuments"
 import useDocumentsStore from "@/stores/DocumentsStore"
-import { useEffect } from "react"
 
 export default function Home() {
 
-  // const documents = useDocumentsStore(state => state.documents)
+  const database = useDbStore(state => state.database)
+  const documents = useDocumentsStore(state => state.documents)
 
-  // useEffect(() => {
-  //   console.log(documents)
-  // }, [documents])
+  // const [documents, setDocuments] = useState<docType[]>([])
+
+  useEffect(() => {
+    // if (database?.name) getDocuments()
+    if (database?.name) GetAllDocuments()
+  }, [database])
+
+  // const getDocuments = async () => {
+  //   await GetAllDocuments().then((res) => {
+
+  //   }).catch((err) => {
+  //     console.error(err)
+  //   })
+
+  // }
 
   return (
     <motion.div
@@ -19,9 +34,9 @@ export default function Home() {
     >
       <main className="h-32 bg-gray-200 text-black">
         <h1>This is home page</h1>
-        {/* {documents.map(doc => (
+        {documents.map(doc => (
           <p>{doc.title}</p>
-        ))} */}
+        ))}
       </main>
     </motion.div>
   )

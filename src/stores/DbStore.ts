@@ -1,11 +1,12 @@
+import { IDBPObjectStore } from "idb";
 import { create } from "zustand"
 
 interface DbStoreType {
     isInitialized: boolean;
     setIsInitialized: (value: boolean) => void;
 
-    database: IDBObjectStore | null;
-    setDatabase: (value: IDBObjectStore) => void;
+    database: IDBPObjectStore<unknown, ["Docs"], "Docs", "readwrite"> | null;
+    setDatabase: (value: IDBPObjectStore<unknown, ["Docs"], "Docs", "readwrite">) => void;
 }
 
 
@@ -14,7 +15,7 @@ const useDbStore = create<DbStoreType>((set, get) => ({
     setIsInitialized: (value: boolean) => set({ isInitialized: value }),
 
     database: null,
-    setDatabase: (value: IDBObjectStore) => set({ database: value })
+    setDatabase: (value: IDBPObjectStore<unknown, ["Docs"], "Docs", "readwrite">) => set({ database: value })
 }))
 
 

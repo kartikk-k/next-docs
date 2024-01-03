@@ -2,8 +2,7 @@
 
 import React, { useEffect } from 'react'
 import useDbStore from '@/stores/DbStore'
-// import InitializeDB, { GetAllDocuments } from '@/helpers/indexDB'
-import InitializeDB from '@/helpers/indexDB/idbIndex'
+import InitializeDB from '@/helpers/indexDB'
 
 
 function Providers({ children }: { children: React.ReactNode }) {
@@ -15,13 +14,6 @@ function Providers({ children }: { children: React.ReactNode }) {
         if (!window) return
         if (!Database?.name) InitializeDB()
     }, [window, Database])
-
-    /* used to fetch all documents from the database when the `Database` variable changes. */
-    // useEffect(() => {
-    //     if (Database === null) return
-    //     console.log('fetching documents', Database)
-    //     GetAllDocuments()
-    // }, [Database])
 
     return (
         <div>
