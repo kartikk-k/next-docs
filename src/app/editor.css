@@ -1,0 +1,28 @@
+.ProseMirror {
+	@apply flex flex-col gap-8 border-none outline-none;
+}
+
+.ProseMirror h1 {
+	@apply text-3xl font-bold text-zinc-800;
+}
+
+.ProseMirror code {
+	@apply bg-gray-200 px-1 py-1 rounded-md;
+}
+
+.ProseMirror ul {
+	@apply list-disc;
+}
+
+.ProseMirror ol {
+	@apply list-decimal;
+}
+
+.ProseMirror p {
+	@apply text-gray-600;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+	@apply text-gray-400 h-0 float-left pointer-events-none;
+	content: attr(data-placeholder);
+}

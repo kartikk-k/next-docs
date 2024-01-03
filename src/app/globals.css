@@ -1,13 +1,18 @@
+@import './editor.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
-    --foreground: 0, 0, 0;
-    --background: 214, 219, 220;
-}
+	--primary: 0, 0, 0;
 
+	--foreground: 0, 0, 0;
+	--background: 214, 219, 220;
+
+	--toggle-background: 255, 255, 255;
+	--toggle-foreground: 0, 0, 0;
+}
 
 /* @media (prefers-color-scheme: dark) {
   :root {
@@ -16,3 +21,20 @@
     --background-end-rgb: 0, 0, 0;
   }
 } */
+
+.light-scrollbar::-webkit-scrollbar {
+	width: 2px;
+	height: 2px;
+}
+
+.light-scrollbar::-webkit-scrollbar-track {
+	@apply bg-gray-200;
+}
+
+.light-scrollbar::-webkit-scrollbar-thumb {
+	@apply bg-gray-300;
+}
+
+.light-scrollbar::-webkit-scrollbar-thumb:hover {
+	@apply bg-gray-400;
+}

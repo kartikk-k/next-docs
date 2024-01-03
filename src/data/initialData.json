@@ -1,0 +1,30 @@
+{
+    "type": "doc",
+    "content": [
+        {
+            "type": "heading",
+            "attrs": {
+                "textAlign": "center",
+                "level": 1
+            },
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Developing super notes"
+                }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "attrs": {
+                "textAlign": "left"
+            },
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Defining the Project Scope: Before diving into development, its crucial to outline the projects scope and objectives. Identify the key features and functionalities that your real-time collaboration web app will offer. Will it be a document editor with real-time updates, or will it support other media types as well? Understanding the projects scope will help set the direction for the development process."
+                }
+            ]
+        }
+    ]
+}

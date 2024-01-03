@@ -9,8 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-toggle": "^1.0.3",
+    "@tiptap/pm": "^2.1.13",
+    "@tiptap/react": "^2.1.13",
+    "@tiptap/starter-kit": "^2.1.13",
+    "class-variance-authority": "^0.7.0",
     "framer-motion": "^10.16.16",
     "idb": "^8.0.0",
+    "lucide-react": "^0.303.0",
+    "mxcn": "^2.0.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
