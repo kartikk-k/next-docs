@@ -11,9 +11,8 @@ function Providers({ children }: { children: React.ReactNode }) {
 
     /* used to initialize the database if it hasn't been initialized yet. */
     useEffect(() => {
-        if (!window) return
         if (!isInitialized) InitializeDB()
-    }, [window])
+    }, [])
 
     return (
         <div>
