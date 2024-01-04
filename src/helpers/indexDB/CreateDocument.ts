@@ -12,7 +12,7 @@ const CreateDocument = async (title: string) => {
     const item: docType = {
         id: new Date().getTime().toString(),
         title: title,
-        content: "",
+        content: JSON,
         createdAt: new Date(),
         updatedAt: new Date(),
     }
