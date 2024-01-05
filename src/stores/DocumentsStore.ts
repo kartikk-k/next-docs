@@ -5,7 +5,7 @@ interface DocumentsStoreType {
     setDocuments: (value: docType[]) => void
 
     addDocument: (value: docType) => void
-    removeDocument: (value: docType) => void
+    removeDocument: (id: string) => void
 }
 
 const useDocumentsStore = create<DocumentsStoreType>((set, get) => ({
@@ -13,7 +13,7 @@ const useDocumentsStore = create<DocumentsStoreType>((set, get) => ({
     setDocuments: (value: docType[]) => set({ documents: value }),
 
     addDocument: (value: docType) => set({ documents: [value, ...get().documents] }),
-    removeDocument: (value: docType) => set({ documents: get().documents.filter((doc) => doc.id !== value.id) }),
+    removeDocument: (id: string) => set({ documents: get().documents.filter((doc) => doc.id !== id) }),
 }))
 
 export default useDocumentsStore;

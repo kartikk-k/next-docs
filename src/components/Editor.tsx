@@ -23,7 +23,6 @@ function Editor() {
 
     const getData = async () => {
         await GetDocumentById(id.toString()).then(res => {
-            console.log("Stored Data", res)
             if (!res) return setDocData(null)
             setDocData(res)
             setContent(res.content)
@@ -37,7 +36,6 @@ function Editor() {
         autofocus: true,
         content: content,
         onUpdate: (data => {
-            console.log(data.editor.getJSON())
             handleContent(data.editor.getJSON())
         })
     })
