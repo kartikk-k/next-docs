@@ -3,7 +3,7 @@ import React from 'react'
 
 function FileHeader() {
     return (
-        <div className='flex items-center justify-between gap-4 p-4 bg-white border-b h-18'>
+        <div className='flex items-center shrink-0 justify-between gap-4 p-4 bg-white border-b h-18'>
             <div className='flex items-center gap-4 select-none'>
 
                 <button title='Back' className='h-9 w-9 flex items-center justify-center text-gray-500 bg-gray-200 rounded-full'>

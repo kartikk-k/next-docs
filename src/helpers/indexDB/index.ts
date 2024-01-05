@@ -3,7 +3,6 @@ import useDbStore from "@/stores/DbStore";
 
 
 const InitializeDB = async () => {
-    // const setDatabase = useDbStore.getState().setDatabase
     const setIsInitialized = useDbStore.getState().setIsInitialized
 
     const db = await openDB('NEXT-Docs-DB', 1, {

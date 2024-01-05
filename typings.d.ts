@@ -1,7 +1,7 @@
 interface docType {
     id: string
     title: string
-    content: JSON
+    content: JSON[]
     createdAt: Date
     updatedAt: Date
     shareUrl?: string

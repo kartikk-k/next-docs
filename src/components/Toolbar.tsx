@@ -13,7 +13,7 @@ function Toolbar() {
     const [collobrativeMode, setCollobrativeMode] = React.useState<boolean>(false)
 
     return (
-        <div className='px-4 py-2 flex items-center gap-2 bg-gray-100 w-full overflow-y-hidden overflow-x-auto light-scrollbar'>
+        <div className='px-4 py-2 sticky border-b top-0 z-10 flex shrink-0 items-center gap-2 bg-gray-100 w-full overflow-y-hidden overflow-x-auto light-scrollbar'>
             <Toggle><Bold size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /></Toggle>
             <Toggle><Underline size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /></Toggle>
             <Toggle><Italic size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /></Toggle>

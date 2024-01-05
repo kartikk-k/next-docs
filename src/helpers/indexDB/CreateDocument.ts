@@ -9,10 +9,10 @@ const CreateDocument = async (title: string) => {
     const db = await openDB('NEXT-Docs-DB')
     const store = db.transaction("Docs", "readwrite").objectStore("Docs")
 
-    const item: docType = {
+    const item = {
         id: new Date().getTime().toString(),
         title: title,
-        content: JSON,
+        content: [],
         createdAt: new Date(),
         updatedAt: new Date(),
     }
@@ -20,7 +20,7 @@ const CreateDocument = async (title: string) => {
     const document = await store.put(item)
     const res = await store.get(document)
 
-    addDocument(res as docType)
+    addDocument(res)
 }
 
 export default CreateDocument
