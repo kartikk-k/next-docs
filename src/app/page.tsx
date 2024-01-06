@@ -11,6 +11,7 @@ import Image from "next/image"
 import Logo from './logo.svg'
 import { ArrowRight, Trash } from "lucide-react"
 import DeleteDocument from "@/helpers/indexDB/DeleteDocument"
+import moment from "moment"
 
 export default function Home() {
 
@@ -35,7 +36,7 @@ export default function Home() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex items-center justify-center w-screen flex-col min-h-screen"
+      className="flex items-center justify-center flex-col min-h-screen py-12"
     >
       <main className="space-y-8 w-full sm:w-auto p-4">
         {/* header */}
@@ -53,7 +54,7 @@ export default function Home() {
           <p className="text-xs text-gray-400 text-center">Open existing document</p>
 
           {/* list of docs */}
-          <div className="py-2 px-4 space-y-4 rounded-xl bg-gray-100 w-full sm:min-w-96">
+          <div className="py-2 px-4 space-y-4 rounded-xl bg-gray-100 sm:min-w-96">
             {documents.map(doc => (
               <motion.div
                 layout
@@ -64,7 +65,8 @@ export default function Home() {
                   <div className="flex items-center w-full text-gray-700 font-medium justify-between">
                     <div>
                       <p className="text-sm">{doc.title}</p>
-                      <p className="text-xs text-gray-500">a day ago</p>
+                      {/* <p className="text-xs text-gray-500">a day ago</p> */}
+                      <p className="text-xs text-gray-500">{moment(doc.updatedAt).fromNow()}</p>
                     </div>
 
                     <div>
@@ -79,8 +81,20 @@ export default function Home() {
             ))}
           </div>
         </div>
-
       </main>
+
+      {/* creator */}
+      <Link
+        target="_blank"
+        href="https://github.com/kartikk-k"
+        className="fixed text-xs top-2 right-2  rounded-md text-gray-400 font-medium"
+      >
+        Created by&nbsp;
+        <span className="text-gray-600 underline">
+          Kartik
+        </span>
+      </Link>
+
     </motion.div>
   )
 }

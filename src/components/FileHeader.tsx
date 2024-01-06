@@ -1,8 +1,31 @@
 import { ArrowLeftIcon } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
+import useDebounce from './hooks/useDebounce'
+import UpdateDocument from '@/helpers/indexDB/UpdateDocument'
+import moment from 'moment'
 
-function FileHeader() {
+interface props {
+    docData: docType | null | undefined
+}
+
+function FileHeader({ docData }: props) {
+
+    const [title, setTitle] = React.useState<string | undefined>(docData?.title)
+    const debouncedTitle = useDebounce(title, 500)
+
+    useEffect(() => {
+        if (!debouncedTitle || !docData) return console.log("not updated")
+        UpdateDocument({
+            // @ts-ignore
+            ...docData,
+            title: debouncedTitle
+        }, 'title')
+    }, [debouncedTitle])
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value)
+    }
 
     return (
         <div className='flex items-center shrink-0 justify-between gap-4 p-4 bg-white border-b h-18'>
@@ -13,8 +36,12 @@ function FileHeader() {
                 </Link>
 
                 <div>
-                    <p className='p-0 font-semibold text-gray-700 bg-transparent border-none focus:bg-transparent'>Development process</p>
-                    <p className='text-xs text-gray-500'>Created on 23 Mar 2023</p>
+                    <input
+                        defaultValue={docData?.title}
+                        onChange={handleChange}
+                        className='p-0 outline-none font-semibold text-gray-700 bg-transparent border-none focus:bg-transparent'
+                    />
+                    <p className='text-xs text-gray-500'>Created on {moment(docData?.createdAt).format('DD MMM YYYY')}</p>
                 </div>
 
             </div>
