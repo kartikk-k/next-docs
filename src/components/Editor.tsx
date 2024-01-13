@@ -14,6 +14,7 @@ import BulletList from '@tiptap/extension-bullet-list'
 import OrderedList from '@tiptap/extension-ordered-list'
 import ListItem from '@tiptap/extension-list-item'
 import TextAlign from '@tiptap/extension-text-align'
+import Link from '@tiptap/extension-link'
 
 
 interface props {
@@ -23,7 +24,7 @@ interface props {
 
 function ContentEditor({ content, initialData }: props) {
 
-    const { bold, setBold, italic, setItalic, underline, setUnderline, code, setCode, strike, setStrike, textAlign, setTextAlign, orderedList, setOrderedList, unorderedList, setUnorderedList }
+    const { bold, setBold, italic, setItalic, underline, setUnderline, code, setCode, strike, setStrike, textAlign, setTextAlign, orderedList, setOrderedList, unorderedList, setUnorderedList, link, setLink, previousLink, setPreviousLink }
         = useToolbarStore()
 
     const [docData, setDocData] = React.useState<any>(initialData)
@@ -41,6 +42,12 @@ function ContentEditor({ content, initialData }: props) {
             BulletList,
             OrderedList,
             ListItem,
+            Link.configure({
+                openOnClick: false,
+                HTMLAttributes: {
+                    class: 'custom-link',
+                }
+            }),
             TextAlign.configure({
                 alignments: ['left', 'center', 'right'],
                 defaultAlignment: 'center',
@@ -87,7 +94,13 @@ function ContentEditor({ content, initialData }: props) {
         if (orderedList !== editor?.isActive('orderedList')) editor.commands.toggleOrderedList()
         else if (unorderedList !== editor?.isActive('bulletList')) editor.commands.toggleBulletList()
 
-    }, [bold, italic, underline, code, strike, textAlign, orderedList, unorderedList])
+        if (link?.trim()) {
+            editor.commands.setLink({ href: link })
+        } else {
+            editor.commands.unsetLink()
+        }
+
+    }, [bold, italic, underline, code, strike, textAlign, orderedList, unorderedList, link])
 
     useEffect(() => {
         if (!editor) return
@@ -106,8 +119,13 @@ function ContentEditor({ content, initialData }: props) {
         setOrderedList(editor?.isActive('orderedList') ?? false)
         setUnorderedList(editor?.isActive('bulletList') ?? false)
 
-    }, [editor?.isActive('bold'), editor?.isActive('italic'), editor?.isActive('underline'), editor?.isActive('code'), editor?.isActive('strike'), editor?.isActive({ textAlign: 'right' }), editor?.isActive({ textAlign: 'left' }), editor?.isActive({ textAlign: 'center' }), editor?.isActive('bulletList'), editor?.isActive('unorderedList')])
+        if (editor?.getAttributes('link').href) setPreviousLink(editor?.getAttributes('link').href)
+        else {
+            setPreviousLink(null)
+            editor?.commands.unsetLink()
+        }
 
+    }, [editor?.isActive('bold'), editor?.getAttributes('link').href, editor?.isActive('italic'), editor?.isActive('underline'), editor?.isActive('code'), editor?.isActive('strike'), editor?.isActive({ textAlign: 'right' }), editor?.isActive({ textAlign: 'left' }), editor?.isActive({ textAlign: 'center' }), editor?.isActive('bulletList'), editor?.isActive('unorderedList')])
 
     return (
         <div className='p-4 md:p-6 lg:p-8 h-full pb-20'>

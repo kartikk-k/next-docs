@@ -4,6 +4,7 @@ import { Toggle } from './ui/Toggle'
 import { AlignCenter, AlignLeft, AlignRight, Bold, Code, Italic, Link2, List, ListOrdered, Strikethrough, Underline } from 'lucide-react'
 import Separator from './ui/Separator'
 import useToolbarStore from '@/stores/ToolbarStore'
+import AddLink from './AddLink'
 
 const ICON_SIZE = 16
 const ICON_STROKE_WIDTH = 2.5
@@ -53,7 +54,8 @@ function Toolbar() {
 
             <Separator />
 
-            <Toggle><Link2 size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /></Toggle>
+            {/* <Toggle><Link2 size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} /></Toggle> */}
+            <AddLink ICON_SIZE={ICON_SIZE} ICON_STROKE_WIDTH={ICON_STROKE_WIDTH} />
         </div>
     )
 }

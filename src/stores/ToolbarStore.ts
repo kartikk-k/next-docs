@@ -25,7 +25,10 @@ interface ToolbarStoreType {
     unorderedList: boolean
     setUnorderedList: (unorderedList: boolean) => void
 
-    // link: boolean
+    link: string | null
+    setLink: (link: string | null) => void
+    previousLink: string | null
+    setPreviousLink: (previousLink: string | null) => void
 }
 
 const useToolbarStore = create<ToolbarStoreType>((set, get) => ({
@@ -52,6 +55,11 @@ const useToolbarStore = create<ToolbarStoreType>((set, get) => ({
 
     unorderedList: false,
     setUnorderedList: (unorderedList: boolean) => set({ unorderedList }),
+
+    link: null,
+    setLink: (link: string | null) => set({ link }),
+    previousLink: null,
+    setPreviousLink: (previousLink: string | null) => set({ previousLink })
 }))
 
 export default useToolbarStore;

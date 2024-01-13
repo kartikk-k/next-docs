@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-toggle": "^1.0.3",
     "@tiptap/extension-blockquote": "^2.1.16",
@@ -16,6 +17,7 @@
     "@tiptap/extension-bullet-list": "^2.1.16",
     "@tiptap/extension-code": "^2.1.16",
     "@tiptap/extension-italic": "^2.1.16",
+    "@tiptap/extension-link": "^2.1.16",
     "@tiptap/extension-list-item": "^2.1.16",
     "@tiptap/extension-ordered-list": "^2.1.16",
     "@tiptap/extension-strike": "^2.1.16",
