@@ -54,32 +54,35 @@ export default function Home() {
           <p className="text-xs text-gray-400 text-center">Open existing document</p>
 
           {/* list of docs */}
-          <div className="py-2 px-4 space-y-4 rounded-xl bg-gray-100 sm:min-w-96">
-            {documents.map(doc => (
-              <motion.div
-                layout
-                key={doc.id}
-                className={"py-2"}
-              >
-                <Link href={`/file/${doc.id}`}>
-                  <div className="flex items-center w-full text-gray-700 font-medium justify-between">
-                    <div>
-                      <p className="text-sm">{doc.title}</p>
-                      {/* <p className="text-xs text-gray-500">a day ago</p> */}
-                      <p className="text-xs text-gray-500">{moment(doc.updatedAt).fromNow()}</p>
-                    </div>
+          {documents.length > 0 && (
+            <div className="py-2 px-4 space-y-4 rounded-xl bg-gray-100 sm:min-w-96">
+              {documents.map(doc => (
+                <motion.div
+                  layout
+                  key={doc.id}
+                  className={"py-2"}
+                >
+                  <Link href={`/file/${doc.id}`}>
+                    <div className="flex items-center w-full text-gray-700 font-medium justify-between">
+                      <div>
+                        <p className="text-sm">{doc.title}</p>
+                        {/* <p className="text-xs text-gray-500">a day ago</p> */}
+                        <p className="text-xs text-gray-500">{moment(doc.updatedAt).fromNow()}</p>
+                      </div>
 
-                    <div>
-                      <button onClick={e => handleDelete(e, doc.id)} className="text-gray-500">
-                        <Trash size={18} />
-                      </button>
-                      {/* <button className="py-1.5 px-3 rounded-lg bg-gray-200 text-gray-600 font-semibold text-sm">Open</button> */}
+                      <div>
+                        <button onClick={e => handleDelete(e, doc.id)} className="text-gray-500">
+                          <Trash size={18} />
+                        </button>
+                        {/* <button className="py-1.5 px-3 rounded-lg bg-gray-200 text-gray-600 font-semibold text-sm">Open</button> */}
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
         </div>
       </main>
 

@@ -6,3 +6,5 @@ interface docType {
     updatedAt: Date
     shareUrl?: string
 }
+
+type allowedToolbarOptions = 'bold' | 'italic' | 'underline' | 'strike' | 'code' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'orderedList' | 'unorderedList'

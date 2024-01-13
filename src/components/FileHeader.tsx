@@ -39,14 +39,14 @@ function FileHeader({ docData }: props) {
                     <input
                         defaultValue={docData?.title}
                         onChange={handleChange}
-                        className='p-0 outline-none font-semibold text-gray-700 bg-transparent border-none focus:bg-transparent'
+                        className='p-0 outline-none w-full font-semibold text-gray-700 bg-transparent border-none focus:bg-transparent'
                     />
                     <p className='text-xs text-gray-500'>Created on {moment(docData?.createdAt).format('DD MMM YYYY')}</p>
                 </div>
 
             </div>
 
-            <div className='flex items-center gap-4'>
+            <div className='flex items-center gap-4 shrink-0'>
 
                 {/* <div className='flex items-center gap-1 text-sm text-gray-600'> */}
                 {/* <Toggle pressed={collobrativeMode} onClick={() => collobrativeModeHandler()}>
@@ -61,11 +61,8 @@ function FileHeader({ docData }: props) {
 
                 {/* <ShareAccess /> */}
 
-                <div>
-                    <button className='w-8 h-8 text-sm text-gray-600 bg-gray-400 rounded-full'>
-
-                    </button>
-                </div>
+                <button className='w-8 h-8 text-sm text-gray-600 bg-gray-400 rounded-full'>
+                </button>
 
             </div>
         </div>

@@ -1,12 +1,19 @@
 import React, { useEffect } from 'react'
 import { EditorContent, JSONContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import InitialContent from '../data/initialData.json'
 import UpdateDocument from '@/helpers/indexDB/UpdateDocument'
-import GetDocumentById from '@/helpers/indexDB/GetDocumentById'
-import { useParams } from 'next/navigation'
 import useDebounce from './hooks/useDebounce'
-import { Loader2 } from 'lucide-react'
+import useToolbarStore from '@/stores/ToolbarStore'
+import Bold from '@tiptap/extension-bold'
+import Italic from '@tiptap/extension-italic'
+import Strike from '@tiptap/extension-strike'
+import Underline from '@tiptap/extension-underline'
+import Blockquote from '@tiptap/extension-blockquote'
+import Code from '@tiptap/extension-code'
+import BulletList from '@tiptap/extension-bullet-list'
+import OrderedList from '@tiptap/extension-ordered-list'
+import ListItem from '@tiptap/extension-list-item'
+import TextAlign from '@tiptap/extension-text-align'
 
 
 interface props {
@@ -14,16 +21,34 @@ interface props {
     initialData: any
 }
 
-function Editor({ content, initialData }: props) {
+function ContentEditor({ content, initialData }: props) {
+
+    const { bold, setBold, italic, setItalic, underline, setUnderline, code, setCode, strike, setStrike, textAlign, setTextAlign, orderedList, setOrderedList, unorderedList, setUnorderedList }
+        = useToolbarStore()
 
     const [docData, setDocData] = React.useState<any>(initialData)
     const debouncedDocData = useDebounce(docData, 1000)
 
     const editor = useEditor({
         extensions: [
-            StarterKit
+            StarterKit,
+            Bold,
+            Italic,
+            Strike,
+            Underline,
+            Blockquote,
+            Code,
+            BulletList,
+            OrderedList,
+            ListItem,
+            TextAlign.configure({
+                alignments: ['left', 'center', 'right'],
+                defaultAlignment: 'center',
+                types: ['heading', 'paragraph', 'blockquote', 'codeBlock', 'listItem']
+            })
         ],
         autofocus: true,
+        enableCoreExtensions: true,
         content: content,
         onUpdate: (data => {
             handleContent(data.editor.getJSON())
@@ -44,6 +69,46 @@ function Editor({ content, initialData }: props) {
         }
     }, [debouncedDocData])
 
+
+    useEffect(() => {
+        if (!editor) return
+
+        // basic formatting
+        bold ? editor.commands.setBold() : editor.commands.unsetBold()
+        italic ? editor.commands.setItalic() : editor.commands.unsetItalic()
+        underline ? editor.commands.setUnderline() : editor.commands.unsetUnderline()
+        strike ? editor.commands.setStrike() : editor.commands.unsetStrike()
+        code ? editor.commands.setCode() : editor.commands.unsetCode()
+
+        // text alignment
+        editor.commands.setTextAlign(textAlign)
+
+        // lists
+        if (orderedList !== editor?.isActive('orderedList')) editor.commands.toggleOrderedList()
+        else if (unorderedList !== editor?.isActive('bulletList')) editor.commands.toggleBulletList()
+
+    }, [bold, italic, underline, code, strike, textAlign, orderedList, unorderedList])
+
+    useEffect(() => {
+        if (!editor) return
+
+        // basic formatting
+        editor.isActive('bold') ? setBold(true) : setBold(false)
+        editor.isActive('italic') ? setItalic(true) : setItalic(false)
+        editor.isActive('underline') ? setUnderline(true) : setUnderline(false)
+        editor.isActive('code') ? setCode(true) : setCode(false)
+        editor.isActive('strike') ? setStrike(true) : setStrike(false)
+
+        // text alignment
+        setTextAlign(editor?.isActive({ textAlign: "left" }) ? "left" : editor?.isActive({ textAlign: "center" }) ? "center" : editor?.isActive({ textAlign: "right" }) ? "right" : "left")
+
+        // lists
+        setOrderedList(editor?.isActive('orderedList') ?? false)
+        setUnorderedList(editor?.isActive('bulletList') ?? false)
+
+    }, [editor?.isActive('bold'), editor?.isActive('italic'), editor?.isActive('underline'), editor?.isActive('code'), editor?.isActive('strike'), editor?.isActive({ textAlign: 'right' }), editor?.isActive({ textAlign: 'left' }), editor?.isActive({ textAlign: 'center' }), editor?.isActive('bulletList'), editor?.isActive('unorderedList')])
+
+
     return (
         <div className='p-4 md:p-6 lg:p-8 h-full pb-20'>
             <EditorContent
@@ -54,4 +119,4 @@ function Editor({ content, initialData }: props) {
     )
 }
 
-export default Editor
+export default ContentEditor
