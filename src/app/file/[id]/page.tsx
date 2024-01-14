@@ -33,7 +33,7 @@ function Page() {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className='overflow-x-hidden w-screen h-screen flex flex-col'
+            className='flex flex-col'
         >
             <FileHeader docData={docData} />
             <Toolbar />

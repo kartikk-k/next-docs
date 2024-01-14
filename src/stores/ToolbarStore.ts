@@ -1,5 +1,6 @@
 import { create } from "zustand"
 
+
 interface ToolbarStoreType {
     bold: boolean
     setBold: (bold: boolean) => void
@@ -29,6 +30,9 @@ interface ToolbarStoreType {
     setLink: (link: string | null) => void
     previousLink: string | null
     setPreviousLink: (previousLink: string | null) => void
+
+    blockType: blockType
+    setBlockType: (blockType: blockType) => void
 }
 
 const useToolbarStore = create<ToolbarStoreType>((set, get) => ({
@@ -59,7 +63,10 @@ const useToolbarStore = create<ToolbarStoreType>((set, get) => ({
     link: null,
     setLink: (link: string | null) => set({ link }),
     previousLink: null,
-    setPreviousLink: (previousLink: string | null) => set({ previousLink })
+    setPreviousLink: (previousLink: string | null) => set({ previousLink }),
+
+    blockType: 'paragraph',
+    setBlockType: (blockType: blockType) => set({ blockType })
 }))
 
 export default useToolbarStore;

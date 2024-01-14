@@ -5,6 +5,7 @@ import { AlignCenter, AlignLeft, AlignRight, Bold, Code, Italic, Link2, List, Li
 import Separator from './ui/Separator'
 import useToolbarStore from '@/stores/ToolbarStore'
 import AddLink from './AddLink'
+import ElementDropdown from './ElementDropdown'
 
 const ICON_SIZE = 16
 const ICON_STROKE_WIDTH = 2.5
@@ -15,6 +16,10 @@ function Toolbar() {
 
     return (
         <div className='px-4 py-2 sticky border-b top-0 z-10 flex shrink-0 items-center gap-2 bg-gray-100 w-full overflow-y-hidden overflow-x-auto light-scrollbar'>
+            <ElementDropdown />
+
+            <Separator />
+
             <Toggle pressed={bold} onClick={() => setBold(!bold)}>
                 <Bold size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />
             </Toggle>

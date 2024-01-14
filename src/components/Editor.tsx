@@ -15,6 +15,7 @@ import OrderedList from '@tiptap/extension-ordered-list'
 import ListItem from '@tiptap/extension-list-item'
 import TextAlign from '@tiptap/extension-text-align'
 import Link from '@tiptap/extension-link'
+import Heading from '@tiptap/extension-heading'
 
 
 interface props {
@@ -24,7 +25,7 @@ interface props {
 
 function ContentEditor({ content, initialData }: props) {
 
-    const { bold, setBold, italic, setItalic, underline, setUnderline, code, setCode, strike, setStrike, textAlign, setTextAlign, orderedList, setOrderedList, unorderedList, setUnorderedList, link, setLink, previousLink, setPreviousLink }
+    const { bold, setBold, italic, setItalic, underline, setUnderline, code, setCode, strike, setStrike, textAlign, setTextAlign, orderedList, setOrderedList, unorderedList, setUnorderedList, link, setPreviousLink, blockType, setBlockType }
         = useToolbarStore()
 
     const [docData, setDocData] = React.useState<any>(initialData)
@@ -42,6 +43,9 @@ function ContentEditor({ content, initialData }: props) {
             BulletList,
             OrderedList,
             ListItem,
+            Heading.configure({
+                levels: [1, 2, 3],
+            }),
             Link.configure({
                 openOnClick: false,
                 HTMLAttributes: {
@@ -100,7 +104,12 @@ function ContentEditor({ content, initialData }: props) {
             editor.commands.unsetLink()
         }
 
-    }, [bold, italic, underline, code, strike, textAlign, orderedList, unorderedList, link])
+        if (blockType === 'paragraph') editor.commands.setParagraph()
+        else if (blockType === 'heading_1') editor.commands.setHeading({ level: 1 })
+        else if (blockType === 'heading_2') editor.commands.setHeading({ level: 2 })
+        else if (blockType === 'heading_3') editor.commands.setHeading({ level: 3 })
+
+    }, [bold, italic, underline, code, strike, textAlign, orderedList, unorderedList, link, blockType])
 
     useEffect(() => {
         if (!editor) return
@@ -125,14 +134,22 @@ function ContentEditor({ content, initialData }: props) {
             editor?.commands.unsetLink()
         }
 
-    }, [editor?.isActive('bold'), editor?.getAttributes('link').href, editor?.isActive('italic'), editor?.isActive('underline'), editor?.isActive('code'), editor?.isActive('strike'), editor?.isActive({ textAlign: 'right' }), editor?.isActive({ textAlign: 'left' }), editor?.isActive({ textAlign: 'center' }), editor?.isActive('bulletList'), editor?.isActive('unorderedList')])
+        if (editor?.isActive('paragraph')) setBlockType('paragraph')
+        else if (editor?.isActive('heading', { level: 1 })) setBlockType('heading_1')
+        else if (editor?.isActive('blockquote')) setBlockType('blockquote')
+
+    }, [editor?.isActive('bold'), editor?.isActive('paragraph'), editor?.isActive('heading', { level: 1 }), editor?.getAttributes('link').href, editor?.isActive('italic'), editor?.isActive('underline'), editor?.isActive('code'), editor?.isActive('strike'), editor?.isActive({ textAlign: 'right' }), editor?.isActive({ textAlign: 'left' }), editor?.isActive({ textAlign: 'center' }), editor?.isActive('bulletList'), editor?.isActive('unorderedList')])
 
     return (
         <div className='p-4 md:p-6 lg:p-8 h-full pb-20'>
             <EditorContent
                 editor={editor}
-                className='max-w-4xl h-full'
+                className='max-w-4xl mx-auto h-full'
             />
+            {/* branding */}
+            <div className='h-32'>
+
+            </div>
         </div>
     )
 }
