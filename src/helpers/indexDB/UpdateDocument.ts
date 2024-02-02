@@ -7,7 +7,8 @@ const UpdateDocument = async (doc: docType) => {
     const store = db.transaction("Docs", "readwrite").objectStore("Docs",)
 
     await store.put({
-        ...doc
+        ...doc,
+        updatedAt: new Date().getTime()
     })
 }
 
