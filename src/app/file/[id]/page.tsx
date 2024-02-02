@@ -8,14 +8,18 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import GetDocumentById from '@/helpers/indexDB/GetDocumentById'
 import { JSONContent } from '@tiptap/react'
-import { Loader2 } from 'lucide-react'
+import { Loader2, MoveLeftIcon } from 'lucide-react'
+import Link from 'next/link'
+import useDebounce from '@/components/hooks/useDebounce'
+import UpdateDocument from '@/helpers/indexDB/UpdateDocument'
 
 function Page() {
     const params = useParams()
     const id = params.id
 
-    const [content, setContent] = useState<JSONContent | undefined>(undefined)
+    const [initialContent, setInitialContent] = useState<JSONContent | undefined>(undefined)
     const [docData, setDocData] = useState<docType | null | undefined>(undefined)
+    const debouncedDocData = useDebounce(docData, 200)
 
     useEffect(() => {
         getData()
@@ -25,29 +29,53 @@ function Page() {
         await GetDocumentById(id.toString()).then(res => {
             if (!res) return setDocData(null)
             setDocData(res)
-            setContent(res.content)
+            setInitialContent(res.content)
         })
+    }
+
+    useEffect(() => {
+        updateContentInDb()
+    }, [debouncedDocData])
+
+    const updateContentInDb = () => {
+        UpdateDocument(debouncedDocData as docType)
     }
 
     return (
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className='flex flex-col'
         >
-            <FileHeader docData={docData} />
-            <Toolbar />
 
-            {content ? (
-                <Editor content={content} initialData={docData} />
+            {initialContent ? (
+                <div className='flex flex-col'>
+                    <FileHeader
+                        // @ts-ignore
+                        onChange={(title: string) => { setDocData({ ...docData, title }) }}
+                        docData={docData}
+                    />
+                    <Toolbar />
+                    <Editor
+                        // @ts-ignore
+                        onChange={val => setDocData({ ...docData, content: val })}
+                        initialContent={initialContent}
+                        initialData={docData}
+                    />
+                </div>
+
             ) : (
-                <div className='h-full flex items-center justify-center text-gray-400'>
+                <div className='h-screen flex items-center justify-center text-gray-400'>
                     {docData ? (
                         <Loader2 className='animate-spin' strokeWidth={1.5} />
                     ) : (
-                        <div className='text-center'>
+                        <div className='text-center py-10'>
                             <p className='animate-bounce'>404</p>
                             <p>Document not found</p>
+
+                            <Link href='/' className='text-primary underline flex justify-center items-center gap-2 py-6'>
+                                {/* <MoveLeftIcon size={18} /> */}
+                                <span>Back to home</span>
+                            </Link>
                         </div>
                     )}
                 </div>

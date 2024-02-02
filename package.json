@@ -15,6 +15,7 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@tiptap/extension-blockquote": "^2.1.16",
     "@tiptap/extension-bold": "^2.1.16",
+    "@tiptap/extension-bubble-menu": "^2.2.1",
     "@tiptap/extension-bullet-list": "^2.1.16",
     "@tiptap/extension-code": "^2.1.16",
     "@tiptap/extension-code-block": "^2.2.1",

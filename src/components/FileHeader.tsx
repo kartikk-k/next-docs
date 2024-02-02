@@ -2,25 +2,21 @@ import { ArrowLeftIcon } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
 import useDebounce from './hooks/useDebounce'
-import UpdateDocument from '@/helpers/indexDB/UpdateDocument'
 import moment from 'moment'
 
 interface props {
     docData: docType | null | undefined
+    onChange: (title: string) => void
 }
 
-function FileHeader({ docData }: props) {
+function FileHeader({ docData, onChange }: props) {
 
     const [title, setTitle] = React.useState<string | undefined>(docData?.title)
     const debouncedTitle = useDebounce(title, 500)
 
     useEffect(() => {
         if (!debouncedTitle || !docData) return console.log("not updated")
-        UpdateDocument({
-            // @ts-ignore
-            ...docData,
-            title: debouncedTitle
-        }, 'title')
+        onChange(debouncedTitle)
     }, [debouncedTitle])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

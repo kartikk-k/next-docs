@@ -17,20 +17,20 @@ import TextAlign from '@tiptap/extension-text-align'
 import Link from '@tiptap/extension-link'
 import Heading from '@tiptap/extension-heading'
 import CodeBlock from '@tiptap/extension-code-block'
+import BubbleMenu from '@tiptap/extension-bubble-menu'
+import { BubbleMenu as BubbleMenuComponent } from '@tiptap/react'
 
 
 interface props {
-    content: JSONContent | undefined,
+    initialContent: JSONContent | undefined,
     initialData: any
+    onChange: (data: JSONContent) => void
 }
 
-function ContentEditor({ content, initialData }: props) {
-
+function ContentEditor({ initialContent, initialData, onChange }: props) {
+    const content = initialContent
     const { bold, setBold, italic, setItalic, underline, setUnderline, code, setCode, strike, setStrike, textAlign, setTextAlign, orderedList, setOrderedList, unorderedList, setUnorderedList, link, setPreviousLink, blockType, setBlockType }
         = useToolbarStore()
-
-    const [docData, setDocData] = React.useState<any>(initialData)
-    const debouncedDocData = useDebounce(docData, 1000)
 
     const editor = useEditor({
         extensions: [
@@ -44,6 +44,9 @@ function ContentEditor({ content, initialData }: props) {
             BulletList,
             OrderedList,
             ListItem,
+            // BubbleMenu.configure({
+            //     element: document.querySelector('.menu') as HTMLElement,
+            // }),
             CodeBlock.configure({
                 exitOnArrowDown: true,
                 exitOnTripleEnter: true,
@@ -52,10 +55,10 @@ function ContentEditor({ content, initialData }: props) {
                 levels: [1, 2, 3],
             }),
             Link.configure({
-                openOnClick: false,
+                openOnClick: true,
                 HTMLAttributes: {
                     class: 'custom-link',
-                }
+                }, autolink: true
             }),
             TextAlign.configure({
                 alignments: ['left', 'center', 'right'],
@@ -72,19 +75,8 @@ function ContentEditor({ content, initialData }: props) {
     })
 
     const handleContent = (content: JSONContent) => {
-        setDocData({
-            // @ts-ignore
-            ...docData,
-            content: content
-        })
+        onChange(content)
     }
-
-    useEffect(() => {
-        if (debouncedDocData) {
-            UpdateDocument(debouncedDocData, 'content')
-        }
-    }, [debouncedDocData])
-
 
     useEffect(() => {
         if (!editor) return
@@ -166,7 +158,9 @@ function ContentEditor({ content, initialData }: props) {
             />
             {/* branding */}
             <div className='h-32'>
-
+                {/* {editor && <BubbleMenuComponent editor={editor} className='px-2 py-1 rounded-lg bg-white shadow-lg shadow-gray-300 border border-gray-300'>
+                    Bubble Menu Pro
+                </BubbleMenuComponent>} */}
             </div>
         </div>
     )
