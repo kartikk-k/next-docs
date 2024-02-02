@@ -16,6 +16,7 @@ import ListItem from '@tiptap/extension-list-item'
 import TextAlign from '@tiptap/extension-text-align'
 import Link from '@tiptap/extension-link'
 import Heading from '@tiptap/extension-heading'
+import CodeBlock from '@tiptap/extension-code-block'
 
 
 interface props {
@@ -43,6 +44,10 @@ function ContentEditor({ content, initialData }: props) {
             BulletList,
             OrderedList,
             ListItem,
+            CodeBlock.configure({
+                exitOnArrowDown: true,
+                exitOnTripleEnter: true,
+            }),
             Heading.configure({
                 levels: [1, 2, 3],
             }),
@@ -104,12 +109,17 @@ function ContentEditor({ content, initialData }: props) {
             editor.commands.unsetLink()
         }
 
+    }, [bold, italic, underline, code, strike, textAlign, orderedList, unorderedList, link])
+
+    useEffect(() => {
+        if (!editor) return
         if (blockType === 'paragraph') editor.commands.setParagraph()
+        else if (blockType === 'code_block') editor.commands.setCodeBlock()
         else if (blockType === 'heading_1') editor.commands.setHeading({ level: 1 })
         else if (blockType === 'heading_2') editor.commands.setHeading({ level: 2 })
         else if (blockType === 'heading_3') editor.commands.setHeading({ level: 3 })
 
-    }, [bold, italic, underline, code, strike, textAlign, orderedList, unorderedList, link, blockType])
+    }, [blockType])
 
     useEffect(() => {
         if (!editor) return
@@ -134,11 +144,19 @@ function ContentEditor({ content, initialData }: props) {
             editor?.commands.unsetLink()
         }
 
-        if (editor?.isActive('paragraph')) setBlockType('paragraph')
-        else if (editor?.isActive('heading', { level: 1 })) setBlockType('heading_1')
-        else if (editor?.isActive('blockquote')) setBlockType('blockquote')
+    }, [editor?.isActive('bold'), editor?.getAttributes('link').href, editor?.isActive('italic'), editor?.isActive('underline'), editor?.isActive('code'), editor?.isActive('strike'), editor?.isActive({ textAlign: 'right' }), editor?.isActive({ textAlign: 'left' }), editor?.isActive({ textAlign: 'center' }), editor?.isActive('bulletList'), editor?.isActive('unorderedList')])
 
-    }, [editor?.isActive('bold'), editor?.isActive('paragraph'), editor?.isActive('heading', { level: 1 }), editor?.getAttributes('link').href, editor?.isActive('italic'), editor?.isActive('underline'), editor?.isActive('code'), editor?.isActive('strike'), editor?.isActive({ textAlign: 'right' }), editor?.isActive({ textAlign: 'left' }), editor?.isActive({ textAlign: 'center' }), editor?.isActive('bulletList'), editor?.isActive('unorderedList')])
+    useEffect(() => {
+        if (!editor) return
+
+        if (editor.isActive('paragraph')) setBlockType('paragraph')
+        else if (editor.isActive('codeBlock')) setBlockType('code_block')
+        else if (editor.isActive('heading', { level: 1 })) setBlockType('heading_1')
+        else if (editor.isActive('heading', { level: 2 })) setBlockType('heading_2')
+        else if (editor.isActive('heading', { level: 3 })) setBlockType('heading_3')
+
+        else if (editor.isActive('blockquote')) setBlockType('blockquote')
+    }, [editor?.isActive('codeBlock'), editor?.isActive('heading', { level: 1 }), editor?.isActive('heading', { level: 2 }), editor?.isActive('heading', { level: 3 })])
 
     return (
         <div className='p-4 md:p-6 lg:p-8 h-full pb-20'>

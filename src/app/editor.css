@@ -21,6 +21,10 @@
 	@apply bg-gray-200 px-1 py-1 rounded-md;
 }
 
+.ProseMirror pre {
+	@apply bg-gray-200 px-2 py-2 rounded-md;
+}
+
 .ProseMirror ul {
 	@apply list-disc;
 }

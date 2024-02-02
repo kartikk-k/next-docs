@@ -1,20 +1,17 @@
 import React, { useEffect } from 'react'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from './ui/Select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/Select'
 import useToolbarStore from '@/stores/ToolbarStore'
 
 function ElementDropdown() {
 
     const blockType = useToolbarStore(state => state.blockType)
-
-    const [value, setValue] = React.useState<blockType>(blockType)
-
-    useEffect(() => {
-        setValue(blockType)
-    }, [value])
+    const setBlockType = useToolbarStore(state => state.setBlockType)
 
     return (
-        <Select onValueChange={value => setValue(value as blockType)}>
-            <SelectTrigger>Paragraph</SelectTrigger>
+        <Select onValueChange={value => setBlockType(value as blockType)} value={blockType}>
+            <SelectTrigger>
+                <SelectValue placeholder="select block type" />
+            </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
                     <SelectItem value='paragraph'>Paragraph</SelectItem>
