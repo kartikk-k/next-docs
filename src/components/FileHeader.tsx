@@ -24,7 +24,7 @@ function FileHeader({ docData, onChange }: props) {
     }
 
     return (
-        <div className='flex items-center shrink-0 justify-between gap-4 p-4 bg-white border-b h-18'>
+        <div className='flex items-center shrink-0 gap-4 p-4 bg-white border-b h-18'>
             <div className='flex items-center gap-4 select-none'>
 
                 <Link href={'/'} title='Back' className='h-9 w-9 flex items-center justify-center text-gray-500 bg-gray-200 rounded-full'>
@@ -43,22 +43,6 @@ function FileHeader({ docData, onChange }: props) {
             </div>
 
             <div className='flex items-center gap-4 shrink-0'>
-
-                {/* <div className='flex items-center gap-1 text-sm text-gray-600'> */}
-                {/* <Toggle pressed={collobrativeMode} onClick={() => collobrativeModeHandler()}>
-                <RadioTowerIcon size={18} strokeWidth={1.5} />
-            </Toggle> */}
-                {/* </div> */}
-
-                {/* <button className='items-center hidden gap-2 px-4 py-2 text-sm text-white duration-200 rounded-xl hover:bg-primary/90 sm:flex bg-primary'>
-                <LockIcon size={16} />
-                Share
-            </button> */}
-
-                {/* <ShareAccess /> */}
-
-                <button className='w-8 h-8 text-sm text-gray-600 bg-gray-400 rounded-full'>
-                </button>
 
             </div>
         </div>
